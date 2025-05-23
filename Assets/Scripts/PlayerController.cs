@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -5,14 +6,18 @@ using UnityEngine.Pool;
 public class PlayerController : MonoBehaviour
 {
     public float speed = 10.0f;
+    public float cooldownTime = 0.5f;
     public float strength = 15.0f;
     private Rigidbody playerRb;
 
+    private bool isAbleToShoot;
+
     [SerializeField] private ProjectilePool projectilePool;
-    
+
     void Start()
     {
         playerRb = GetComponent<Rigidbody>();
+        isAbleToShoot = true;
     }
 
     // Update is called once per frame
@@ -48,6 +53,9 @@ public class PlayerController : MonoBehaviour
 
     private void Shoot()
     {
+        if (!isAbleToShoot)
+            return;
+
         Debug.Log("Player shoots");
         Projectile projectile = projectilePool.Get();
         if (projectile == null)
@@ -58,5 +66,13 @@ public class PlayerController : MonoBehaviour
 
         projectile.AddImpulse(strength);
         Debug.Log("Projectile velocity: " + projectile.projectileRb.linearVelocity);
+        StartCoroutine(CoolDown());
+    }
+
+    IEnumerator CoolDown()
+    {
+        isAbleToShoot = false;
+        yield return new WaitForSeconds(cooldownTime);
+        isAbleToShoot = true;
     }
 }
