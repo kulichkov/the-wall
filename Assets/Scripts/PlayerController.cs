@@ -1,7 +1,5 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Pool;
 
 public class PlayerController : MonoBehaviour
 {
@@ -29,9 +27,7 @@ public class PlayerController : MonoBehaviour
 
         // Shooting
         if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Shoot();
-        }
+           Shoot();
     }
 
     void OnCollisionEnter(Collision collision)
@@ -64,7 +60,7 @@ public class PlayerController : MonoBehaviour
         Vector3 projectilePosition = new Vector3(transform.position.x, transform.position.y, transform.position.z - 2);
         projectile.transform.position = projectilePosition;
 
-        projectile.AddImpulse(strength);
+        projectile.Throw(strength);
         Debug.Log("Projectile velocity: " + projectile.projectileRb.linearVelocity);
         StartCoroutine(CoolDown());
     }

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Pool;
 
 public class Projectile : MonoBehaviour
 {
@@ -16,9 +15,7 @@ public class Projectile : MonoBehaviour
     void Update()
     {
         if (transform.position.y < yBottomBound)
-        {
             Release();
-        }
     }
 
     public void Release()
@@ -26,8 +23,15 @@ public class Projectile : MonoBehaviour
         projectilePool.Release(this);
     }
 
-    public void AddImpulse(float force)
+    public void Reset()
     {
+        projectileRb.useGravity = false;
+        projectileRb.linearVelocity = Vector3.zero;
+    }
+
+    public void Throw(float force)
+    {
+        projectileRb.useGravity = true;
         projectileRb.AddForce(Vector3.down * force, ForceMode.Impulse);
     }
 }

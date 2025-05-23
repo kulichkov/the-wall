@@ -3,7 +3,6 @@ using UnityEngine.Pool;
 
 public class ProjectilePool : MonoBehaviour
 {
-
     [SerializeField] private Projectile projectilePrefab;
     [SerializeField] int defaultCapacity = 5;
     [SerializeField] int maxSize = 8;
@@ -23,6 +22,7 @@ public class ProjectilePool : MonoBehaviour
     public void Release(Projectile projectile)
     {
         projectilePool.Release(projectile);
+        projectile.Reset();
     }
 
     // invoked when creating an item to populate the object pool
@@ -37,7 +37,7 @@ public class ProjectilePool : MonoBehaviour
     private void OnReleaseToPool(Projectile pooledObject)
     {
         pooledObject.gameObject.SetActive(false);
-        pooledObject.projectileRb.linearVelocity = Vector3.zero;
+        pooledObject.Reset();
     }
 
     // Invoked when retrieving the next item from the object pool
