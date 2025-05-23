@@ -5,55 +5,15 @@ using UnityEngine.Pool;
 public class PlayerController : MonoBehaviour
 {
     public float speed = 10.0f;
-    public GameObject projectilePrefab;
+    public float strength = 15.0f;
     private Rigidbody playerRb;
-    private IObjectPool<GameObject> objectPool;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-     
-    // Throw an exception if we try to return an existing item, already in the pool
-    [SerializeField] private bool collectionCheck = true;
 
-    // extra options to control the pool capacity and maximum size
-    [SerializeField] private int defaultCapacity = 3;
-    [SerializeField] private int maxSize = 6;
-
+    [SerializeField] private ProjectilePool projectilePool;
+    
     void Start()
     {
         playerRb = GetComponent<Rigidbody>();
     }
-
-    // private void Awake()
-    // {
-    //     // objectPool = new ObjectPool<GameObject>(CreateProjectile,
-    //     //     OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject,
-    //     //     collectionCheck, defaultCapacity, maxSize);
-    // }
-
-    // // invoked when creating an item to populate the object pool
-    // // private GameObject CreateProjectile()
-    // // {
-    //     // GameObject projectileInstance = Instantiate(projectilePrefab);
-    //     // projectileInstance.ObjectPool = objectPool;
-    //     // return projectileInstance;
-    // // }
-
-    // // Invoked when returning an item to the object pool
-    // private void OnReleaseToPool(Projectile pooledObject)
-    // {
-    //     pooledObject.gameObject.SetActive(false);
-    // }
-
-    // // Invoked when retrieving the next item from the object pool
-    // private void OnGetFromPool(Projectile pooledObject)
-    // {
-    //     pooledObject.gameObject.SetActive(true);
-    // }
-
-    // // Invoked when we exceed the maximum number of pooled items (i.e. destroy the pooled object)
-    // private void OnDestroyPooledObject(Projectile pooledObject)
-    // {
-    //     Destroy(pooledObject.gameObject);
-    // }
 
     // Update is called once per frame
     void Update()
@@ -65,12 +25,7 @@ public class PlayerController : MonoBehaviour
         // Shooting
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            GameObject projectile = Instantiate(projectilePrefab);
-            if (projectile == null)
-                return;
-            Debug.Log("Player shot at: " + Time.time);
-            Vector3 projectilePosition = new Vector3(transform.position.x, projectilePrefab.transform.position.y, projectilePrefab.transform.position.z - 1);
-            projectile.transform.position = projectilePosition;
+            Shoot();
         }
     }
 
@@ -79,7 +34,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             Debug.Log("Player collided Enemy");
-        }  
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -89,5 +44,19 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Player collided Powerup");
             Destroy(other.gameObject);
         }
+    }
+
+    private void Shoot()
+    {
+        Debug.Log("Player shoots");
+        Projectile projectile = projectilePool.Get();
+        if (projectile == null)
+            return;
+
+        Vector3 projectilePosition = new Vector3(transform.position.x, transform.position.y, transform.position.z - 2);
+        projectile.transform.position = projectilePosition;
+
+        projectile.AddImpulse(strength);
+        Debug.Log("Projectile velocity: " + projectile.projectileRb.linearVelocity);
     }
 }

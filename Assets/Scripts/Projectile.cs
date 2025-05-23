@@ -1,18 +1,15 @@
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class Projectile : MonoBehaviour
 {
-    public float impulseSpeed = 5.0f;
-    private Rigidbody projectileRb;
+    public Rigidbody projectileRb { get; private set; }
+    public ProjectilePool projectilePool;
     private float yBottomBound = -10;
 
     void Awake()
     {
         projectileRb = GetComponent<Rigidbody>();
-        if (impulseSpeed > 0.0f)
-        {
-            projectileRb.AddForce(Vector3.down * impulseSpeed, ForceMode.Impulse);
-        }
     }
 
     // Update is called once per frame
@@ -20,7 +17,17 @@ public class Projectile : MonoBehaviour
     {
         if (transform.position.y < yBottomBound)
         {
-            Destroy(gameObject);
+            Release();
         }
+    }
+
+    public void Release()
+    {
+        projectilePool.Release(this);
+    }
+
+    public void AddImpulse(float force)
+    {
+        projectileRb.AddForce(Vector3.down * force, ForceMode.Impulse);
     }
 }
