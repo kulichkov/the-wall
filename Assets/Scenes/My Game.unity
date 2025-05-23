@@ -698,6 +698,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 720249311}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1167156850
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1167156852}
+  - component: {fileID: 1167156851}
+  m_Layer: 0
+  m_Name: EnemySpawnManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1167156851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1167156850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be25350b56b1e4f7ba89d6a49109cc58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  standardEnemyPrefab: {fileID: -157060926776502647, guid: 93efb4ef7b5e24e8492c98e4d0026e9e, type: 3}
+  strongEnemyPrefab: {fileID: -157060926776502647, guid: 93efb4ef7b5e24e8492c98e4d0026e9e, type: 3}
+--- !u!4 &1167156852
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1167156850}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.032265544, y: 25.39484, z: 0.93444}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1269585704
 GameObject:
   m_ObjectHideFlags: 0
@@ -835,8 +881,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e022556b04c24a2bb882ce603700a74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  standardEnemyPrefab: {fileID: 6458831786173437187, guid: 93efb4ef7b5e24e8492c98e4d0026e9e, type: 3}
-  strongEnemyPrefab: {fileID: 8440140230840651702, guid: 7c6aefabd07b84ba1980ee190af4cd7c, type: 3}
   powerupPrefab: {fileID: 356973694350922313, guid: 12964946d17864611aedebe434c4fad3, type: 3}
   projectilePrefab: {fileID: 6768761251972626225, guid: 506428eaacdab4f82a55651d3bb1d964, type: 3}
 --- !u!4 &1669742070
@@ -985,3 +1029,4 @@ SceneRoots:
   - {fileID: 720249311}
   - {fileID: 1669742070}
   - {fileID: 1711864305}
+  - {fileID: 1167156852}

@@ -27,6 +27,8 @@ public class Projectile : MonoBehaviour
     {
         projectileRb.useGravity = false;
         projectileRb.linearVelocity = Vector3.zero;
+        projectileRb.angularVelocity = Vector3.zero;
+        transform.eulerAngles = Vector3.zero;
     }
 
     public void Throw(float force)
