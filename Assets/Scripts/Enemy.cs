@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     private Rigidbody enemyRb;
     private float yBottomBound = -10;
     private IObjectPool<Enemy> _enemyPool;
+    private bool isMoving;
 
     void Start()
     {
@@ -18,7 +19,7 @@ public class Enemy : MonoBehaviour
     {
         if (GameManager.Instance.IsGameOver)
             return;
-            
+
         transform.Translate(Vector3.up * speed * Time.deltaTime);
         if (transform.position.y < yBottomBound)
             _enemyPool.Release(this);

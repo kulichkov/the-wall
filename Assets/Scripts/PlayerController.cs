@@ -7,7 +7,6 @@ public class PlayerController : MonoBehaviour
     public float cooldownTime = 0.5f;
     public float strength = 15.0f;
     private Rigidbody playerRb;
-
     private bool isAbleToShoot;
 
     [SerializeField] private ProjectilePool projectilePool;
@@ -23,14 +22,14 @@ public class PlayerController : MonoBehaviour
     {
         if (GameManager.Instance.IsGameOver)
             return;
-            
+
         // Moving
         float horizontalInput = Input.GetAxis("Horizontal");
         playerRb.AddForce(Vector3.right * speed * horizontalInput);
 
         // Shooting
         if (Input.GetKeyDown(KeyCode.Space))
-           Shoot();
+            Shoot();
     }
 
     void OnCollisionEnter(Collision collision)
@@ -68,10 +67,17 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(CoolDown());
     }
 
-    IEnumerator CoolDown()
+    private IEnumerator CoolDown()
     {
         isAbleToShoot = false;
         yield return new WaitForSeconds(cooldownTime);
         isAbleToShoot = true;
     }
+
+    public void StopMoving()
+    {
+        playerRb.linearVelocity = Vector3.zero;
+        playerRb.angularVelocity = Vector3.zero;
+    }
+
 }
