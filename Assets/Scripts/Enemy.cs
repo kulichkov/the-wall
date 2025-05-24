@@ -16,6 +16,9 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance.IsGameOver)
+            return;
+            
         transform.Translate(Vector3.up * speed * Time.deltaTime);
         if (transform.position.y < yBottomBound)
             _enemyPool.Release(this);
@@ -27,6 +30,11 @@ public class Enemy : MonoBehaviour
         {
             projectile.Release();
             _enemyPool.Release(this);
+            GameManager.Instance.AddScore(1);
+        }
+        else if (collision.gameObject.TryGetComponent<PlayerController>(out var player))
+        {
+            GameManager.Instance.EndGame();
         }
     }
 

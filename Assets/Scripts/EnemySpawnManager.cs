@@ -54,6 +54,9 @@ public class EnemySpawnManager : MonoBehaviour
 
     private void SpawnStandardEnemy()
     {
+        if (GameManager.Instance.IsGameOver)
+            return;
+            
         Enemy enemy = enemyPool.Get();
         enemy.transform.position = GenerateEnemyVector();
     }

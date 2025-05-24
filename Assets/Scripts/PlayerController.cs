@@ -21,6 +21,9 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.Instance.IsGameOver)
+            return;
+            
         // Moving
         float horizontalInput = Input.GetAxis("Horizontal");
         playerRb.AddForce(Vector3.right * speed * horizontalInput);
