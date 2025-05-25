@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -16,6 +17,7 @@ public class EnemySpawnManager : MonoBehaviour
     private int maxSize = 10;
     private bool collectionCheck = true;
     private IObjectPool<Enemy> enemyPool;
+    private List<Enemy> activeEnemies = new List<Enemy>();
 
     void Start()
     {
@@ -36,6 +38,7 @@ public class EnemySpawnManager : MonoBehaviour
     // Invoked when returning an item to the object pool
     private void OnReleaseToPool(Enemy pooledObject)
     {
+        activeEnemies.Remove(pooledObject);
         pooledObject.gameObject.SetActive(false);
         pooledObject.Reset();
     }
@@ -44,6 +47,7 @@ public class EnemySpawnManager : MonoBehaviour
     private void OnGetFromPool(Enemy pooledObject)
     {
         pooledObject.gameObject.SetActive(true);
+        activeEnemies.Add(pooledObject);
     }
 
     // Invoked when we exceed the maximum number of pooled items (i.e. destroy the pooled object)
@@ -56,7 +60,7 @@ public class EnemySpawnManager : MonoBehaviour
     {
         if (GameManager.Instance.IsGameOver)
             return;
-            
+
         Enemy enemy = enemyPool.Get();
         enemy.transform.position = GenerateEnemyVector();
     }
@@ -67,4 +71,23 @@ public class EnemySpawnManager : MonoBehaviour
         return new Vector3(xAxisValue, yEnemySpawn, zEnemySpawn);
     }
 
+    public void Clear()
+    {
+        if (activeEnemies.Count == 0)
+            return;
+            
+        int lastIndex = activeEnemies.Count - 1;
+        int firstIndex = 0;
+
+        Debug.Log($"lastIndex: {lastIndex}, firstIndex: {firstIndex}");
+        for (int i = lastIndex; i >= firstIndex; i--)
+        {
+            Debug.Log($"i: {i}, activeEnemies.Count: {activeEnemies.Count}");
+            var enemy = activeEnemies[i];
+            activeEnemies.Remove(enemy);
+            enemyPool.Release(enemy);
+        }
+
+        enemyPool.Clear();
+    }
 }

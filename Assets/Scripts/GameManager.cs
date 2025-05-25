@@ -1,13 +1,18 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
     static public GameManager Instance;
     public bool IsGameOver { get; private set; }
     public int CurrentScore { get; private set; }
-    private PlayerController playerController;
+    [SerializeField] private PlayerController Player;
+    [SerializeField] private EnemySpawnManager EnemySpawnManager;
+    
     public TextMeshProUGUI ScoreText;
+    public MenuPanel MenuPanel;
 
     void Start()
     {
@@ -20,9 +25,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        playerController = GameObject.Find("Player").GetComponent<PlayerController>();
-
-        StartGame();
+        SetInitialState();
     }
 
     private void UpdateScoreText()
@@ -30,18 +33,34 @@ public class GameManager : MonoBehaviour
         ScoreText.text = $"Score: {CurrentScore}";
     }
 
+    private void SetInitialState()
+    {
+        IsGameOver = true;
+        ScoreText.text = "";
+
+        MenuPanel.TitleText.text = "THE WALL";
+        MenuPanel.ButtonText.text = "START GAME";
+        MenuPanel.gameObject.SetActive(true);
+    }
+
     public void StartGame()
     {
-        IsGameOver = false;
+        MenuPanel.gameObject.SetActive(false);
         CurrentScore = 0;
         UpdateScoreText();
+        Player.Reset();
+        EnemySpawnManager.Clear();
+        IsGameOver = false;
         Debug.Log($"Game started. Score: {CurrentScore}");
     }
 
     public void EndGame()
     {
-        playerController.StopMoving();
+        Player.StopMoving();
         IsGameOver = true;
+        MenuPanel.TitleText.text = "GAME OVER";
+        MenuPanel.ButtonText.text = "RESTART";
+        MenuPanel.gameObject.SetActive(true);
         Debug.Log($"Game over. Score: {CurrentScore}");
     }
 

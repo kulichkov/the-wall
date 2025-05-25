@@ -4,17 +4,18 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float speed = 10.0f;
-    public float cooldownTime = 0.5f;
-    public float strength = 15.0f;
-    private Rigidbody playerRb;
-    private bool isAbleToShoot;
-
+    [SerializeField] private float cooldownTime = 0.5f;
+    [SerializeField] private float strength = 15.0f;
     [SerializeField] private ProjectilePool projectilePool;
+    private Rigidbody playerRb;
+    private bool isAbleToShoot = true;
+    private Vector3 startPosition;
 
     void Start()
     {
+        Debug.Log("transform.position " + transform.position);
+        startPosition = transform.position;
         playerRb = GetComponent<Rigidbody>();
-        isAbleToShoot = true;
     }
 
     // Update is called once per frame
@@ -79,5 +80,8 @@ public class PlayerController : MonoBehaviour
         playerRb.linearVelocity = Vector3.zero;
         playerRb.angularVelocity = Vector3.zero;
     }
-
+    public void Reset()
+    {
+        transform.position = startPosition;
+    }
 }
