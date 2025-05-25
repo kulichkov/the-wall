@@ -8,7 +8,6 @@ public class Enemy : MonoBehaviour
     private Rigidbody enemyRb;
     private float yBottomBound = -10;
     private IObjectPool<Enemy> _enemyPool;
-    private bool isMoving;
 
     void Start()
     {
@@ -31,19 +30,32 @@ public class Enemy : MonoBehaviour
         {
             projectile.Release();
             _enemyPool.Release(this);
+            DisablePhysics();
             GameManager.Instance.AddScore(1);
         }
         else if (collision.gameObject.TryGetComponent<PlayerController>(out var player))
         {
+            DisablePhysics();
             GameManager.Instance.EndGame();
         }
     }
 
     public void Reset()
     {
+        EnablePhysics();
         enemyRb.useGravity = false;
         enemyRb.linearVelocity = Vector3.zero;
         enemyRb.angularVelocity = Vector3.zero;
         transform.eulerAngles = Vector3.zero;
+    }
+
+    private void DisablePhysics()
+    {
+        enemyRb.isKinematic = true;
+    }
+
+    private void EnablePhysics()
+    {
+        enemyRb.isKinematic = false;
     }
 }

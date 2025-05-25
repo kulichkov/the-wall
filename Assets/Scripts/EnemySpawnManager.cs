@@ -71,11 +71,16 @@ public class EnemySpawnManager : MonoBehaviour
         return new Vector3(xAxisValue, yEnemySpawn, zEnemySpawn);
     }
 
+    public void StopActiveEnemies()
+    {
+        
+    }
+
     public void Clear()
     {
         if (activeEnemies.Count == 0)
             return;
-            
+
         int lastIndex = activeEnemies.Count - 1;
         int firstIndex = 0;
 
