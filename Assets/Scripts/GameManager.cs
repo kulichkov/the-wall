@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,7 +12,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI ScoreText;
     public MenuPanel MenuPanel;
 
-    void Start()
+    void Awake()
     {
         if (Instance != null)
         {
@@ -45,29 +43,28 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        MenuPanel.gameObject.SetActive(false);
+        IsGameOver = false;
         CurrentScore = 0;
         UpdateScoreText();
+        MenuPanel.gameObject.SetActive(false);
         Player.Reset();
         EnemySpawnManager.Clear();
-        IsGameOver = false;
-        Debug.Log($"Game started. Score: {CurrentScore}");
+        EnemySpawnManager.StartSpawning();
     }
 
     public void EndGame()
     {
         Player.StopMoving();
+        EnemySpawnManager.StopSpawning();
         IsGameOver = true;
         MenuPanel.TitleText.text = "GAME OVER";
         MenuPanel.ButtonText.text = "RESTART";
         MenuPanel.gameObject.SetActive(true);
-        Debug.Log($"Game over. Score: {CurrentScore}");
     }
 
     public void AddScore(int score)
     {
         CurrentScore += score;
         UpdateScoreText();
-        Debug.Log($"Score updated by {score}: {CurrentScore}");
     }
 }

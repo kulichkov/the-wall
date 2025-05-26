@@ -1,5 +1,3 @@
-using System;
-using System.Drawing;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -9,6 +7,7 @@ public class Enemy : MonoBehaviour
     public IObjectPool<Enemy> enemyPool { set => _enemyPool = value; }
     private Rigidbody enemyRb;
     private float yBottomBound = -10;
+    private float yTopBound = 24;
     private IObjectPool<Enemy> _enemyPool;
     
     void Awake()
@@ -22,7 +21,13 @@ public class Enemy : MonoBehaviour
             transform.Translate(Vector3.up * speed * Time.deltaTime);
 
         if (transform.position.y < yBottomBound)
-                _enemyPool.Release(this);        
+        {
+            _enemyPool.Release(this);
+        }
+        else if (transform.position.y >= yTopBound)
+        {
+            GameManager.Instance.EndGame();
+        }
     }
 
     void OnCollisionEnter(Collision collision)
@@ -34,11 +39,11 @@ public class Enemy : MonoBehaviour
             DisablePhysics();
             GameManager.Instance.AddScore(1);
         }
-        else if (collision.gameObject.TryGetComponent<PlayerController>(out var player))
-        {
-            DisablePhysics();
-            GameManager.Instance.EndGame();
-        }
+        // else if (collision.gameObject.TryGetComponent<PlayerController>(out var player))
+        // {
+        //     DisablePhysics();
+        //     GameManager.Instance.EndGame();
+        // }
     }
 
     public void Reset()
