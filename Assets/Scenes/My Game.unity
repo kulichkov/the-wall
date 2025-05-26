@@ -211,7 +211,7 @@ GameObject:
   - component: {fileID: 73516362}
   - component: {fileID: 73516361}
   m_Layer: 5
-  m_Name: RestartButton
+  m_Name: StartButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -280,7 +280,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 73516362}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1410515486}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: StartGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &73516362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -352,7 +364,7 @@ GameObject:
   - component: {fileID: 282963687}
   - component: {fileID: 282963686}
   m_Layer: 5
-  m_Name: GameOverText
+  m_Name: TitleText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -397,7 +409,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: GAME OVER
+  m_text: <Title>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 570821af6fea44af1be9861c4a496950, type: 2}
   m_sharedMaterial: {fileID: 21855137469139786, guid: 570821af6fea44af1be9861c4a496950, type: 2}
@@ -1302,8 +1314,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be25350b56b1e4f7ba89d6a49109cc58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  standardEnemyPrefab: {fileID: -157060926776502647, guid: 93efb4ef7b5e24e8492c98e4d0026e9e, type: 3}
-  strongEnemyPrefab: {fileID: -157060926776502647, guid: 93efb4ef7b5e24e8492c98e4d0026e9e, type: 3}
+  standardEnemyPrefab: {fileID: -3797228222012868100, guid: c563e45c991cd4d6c86977e7a9559e11, type: 3}
+  strongEnemyPrefab: {fileID: -3797228222012868100, guid: c563e45c991cd4d6c86977e7a9559e11, type: 3}
+  yEnemySpawn: 10
 --- !u!4 &1167156852
 Transform:
   m_ObjectHideFlags: 0
@@ -1313,7 +1326,7 @@ Transform:
   m_GameObject: {fileID: 1167156850}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.032265544, y: 25.39484, z: 0.93444}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1456,7 +1469,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00951013894bb4d2e9e6bf0988eaa1b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Player: {fileID: 148696427}
+  EnemySpawnManager: {fileID: 1167156851}
   ScoreText: {fileID: 1116201370}
+  MenuPanel: {fileID: 1730413737}
 --- !u!4 &1410515487
 Transform:
   m_ObjectHideFlags: 0
@@ -1578,8 +1594,9 @@ GameObject:
   - component: {fileID: 1730413736}
   - component: {fileID: 1730413735}
   - component: {fileID: 1730413734}
+  - component: {fileID: 1730413737}
   m_Layer: 5
-  m_Name: GameOverPanel
+  m_Name: MenuPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1670,6 +1687,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1730413732}
   m_CullTransparentMesh: 1
+--- !u!114 &1730413737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730413732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f4840b807ffe4e82998ec586177049f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TitleText: {fileID: 282963686}
+  ButtonText: {fileID: 2063072161}
 --- !u!1 &2063072159
 GameObject:
   m_ObjectHideFlags: 0
@@ -1727,7 +1758,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: RESTART
+  m_text: <Button>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 570821af6fea44af1be9861c4a496950, type: 2}
   m_sharedMaterial: {fileID: 21855137469139786, guid: 570821af6fea44af1be9861c4a496950, type: 2}
@@ -1836,7 +1867,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8075474098743279184, guid: 9dd30f1535a8e4935b36e67710071d7e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 24.11
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 8075474098743279184, guid: 9dd30f1535a8e4935b36e67710071d7e, type: 3}
       propertyPath: m_LocalPosition.z

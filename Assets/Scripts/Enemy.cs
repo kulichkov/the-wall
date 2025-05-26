@@ -1,3 +1,5 @@
+using System;
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -8,20 +10,19 @@ public class Enemy : MonoBehaviour
     private Rigidbody enemyRb;
     private float yBottomBound = -10;
     private IObjectPool<Enemy> _enemyPool;
-
-    void Start()
+    
+    void Awake()
     {
         enemyRb = GetComponent<Rigidbody>();
     }
 
     void Update()
     {
-        if (GameManager.Instance.IsGameOver)
-            return;
+        if (!GameManager.Instance.IsGameOver)
+            transform.Translate(Vector3.up * speed * Time.deltaTime);
 
-        transform.Translate(Vector3.up * speed * Time.deltaTime);
         if (transform.position.y < yBottomBound)
-            _enemyPool.Release(this);
+                _enemyPool.Release(this);        
     }
 
     void OnCollisionEnter(Collision collision)
@@ -45,8 +46,6 @@ public class Enemy : MonoBehaviour
         EnablePhysics();
         enemyRb.useGravity = false;
         enemyRb.linearVelocity = Vector3.zero;
-        enemyRb.angularVelocity = Vector3.zero;
-        transform.eulerAngles = Vector3.zero;
     }
 
     private void DisablePhysics()

@@ -11,7 +11,7 @@ public class EnemySpawnManager : MonoBehaviour
     private Enemy strongEnemyPrefab;
 
     private float xRange = 22.0f;
-    private float yEnemySpawn = 10.0f;
+    [SerializeField] private float yEnemySpawn = 0.0f;
     private float zEnemySpawn = -0.5f;
     private int defaultCapacity = 5;
     private int maxSize = 10;
@@ -21,8 +21,7 @@ public class EnemySpawnManager : MonoBehaviour
 
     void Start()
     {
-        InvokeRepeating(nameof(SpawnStandardEnemy), 1.0f, 4.0f);
-
+        InvokeRepeating(nameof(SpawnStandardEnemy), 2.0f, 1.0f);
         enemyPool = new ObjectPool<Enemy>
         (CreateObject, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, collectionCheck, defaultCapacity, maxSize);
     }
@@ -31,7 +30,8 @@ public class EnemySpawnManager : MonoBehaviour
     private Enemy CreateObject()
     {
         Enemy enemyInstance = Instantiate(standardEnemyPrefab);
-        enemyInstance.enemyPool = enemyPool;
+        enemyInstance.gameObject.layer = LayerMask.NameToLayer("Enemy");
+        enemyInstance.enemyPool = enemyPool;        
         return enemyInstance;
     }
 
@@ -69,11 +69,6 @@ public class EnemySpawnManager : MonoBehaviour
     {
         float xAxisValue = Random.Range(-xRange, xRange);
         return new Vector3(xAxisValue, yEnemySpawn, zEnemySpawn);
-    }
-
-    public void StopActiveEnemies()
-    {
-        
     }
 
     public void Clear()
