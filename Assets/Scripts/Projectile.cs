@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -35,5 +36,16 @@ public class Projectile : MonoBehaviour
     {
         projectileRb.useGravity = true;
         projectileRb.AddForce(Vector3.down * force, ForceMode.Impulse);
+        projectileRb.AddTorque(GetTorqueVector(), ForceMode.Impulse);
+    }
+
+    private Vector3 GetTorqueVector()
+    {
+        return new Vector3(GetRandomTorqueValue(), GetRandomTorqueValue(), GetRandomTorqueValue());
+    }
+
+    private float GetRandomTorqueValue()
+    {
+        return UnityEngine.Random.Range(-1.0f, 1.0f);
     }
 }
