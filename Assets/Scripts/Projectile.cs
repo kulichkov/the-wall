@@ -1,10 +1,10 @@
-using System;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
     public Rigidbody projectileRb { get; private set; }
     public ProjectilePool projectilePool;
+    public ProjectileParticleSystem projectileParticleSystem;
     private float yBottomBound = -10;
 
     void Awake()
@@ -12,11 +12,15 @@ public class Projectile : MonoBehaviour
         projectileRb = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (transform.position.y < yBottomBound)
             Release();
+
+        if (projectileParticleSystem != null)
+        {
+            projectileParticleSystem.transform.position = transform.position;
+        }
     }
 
     public void Release()

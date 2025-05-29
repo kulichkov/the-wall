@@ -9,10 +9,14 @@ public class Enemy : MonoBehaviour
     private float yBottomBound = -10;
     private float yTopBound = 24;
     private IObjectPool<Enemy> _enemyPool;
-    
+    private Animator animator;
+    private bool isDead;
+    [SerializeField] private ParticleSystem blood;
+
     void Awake()
     {
         enemyRb = GetComponent<Rigidbody>();
+        animator = transform.GetComponentInChildren<Animator>();
     }
 
     void Update()
@@ -32,11 +36,15 @@ public class Enemy : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.TryGetComponent<Projectile>(out var projectile))
+        if (!isDead && collision.gameObject.TryGetComponent<Projectile>(out var projectile))
         {
             projectile.Release();
-            _enemyPool.Release(this);
-            DisablePhysics();
+            // _enemyPool.Release(this);
+            // DisablePhysics();
+            enemyRb.useGravity = true;
+            animator.SetBool("Grounded", false);
+            blood.Play();
+            isDead = true;
             GameManager.Instance.AddScore(1);
         }
         // else if (collision.gameObject.TryGetComponent<PlayerController>(out var player))
@@ -48,7 +56,11 @@ public class Enemy : MonoBehaviour
 
     public void Reset()
     {
-        EnablePhysics();
+        // EnablePhysics();
+        blood.Stop();
+        isDead = false;
+        animator.Rebind();
+        animator.Update(0f);
         enemyRb.useGravity = false;
         enemyRb.linearVelocity = Vector3.zero;
     }

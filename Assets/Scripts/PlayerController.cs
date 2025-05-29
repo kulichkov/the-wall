@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
         startPosition = transform.position;
         playerRb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        animator.SetBool("Static_b", true);
+        animator.SetInteger("DeathType_int", 1);
     }
 
     // Update is called once per frame
@@ -59,14 +61,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Run(bool isRunning)
+    public void SetDead()
     {
-        // Run
-        // Static_b = false
-        // Speed_f > 0.5
-
-        // Idle
-        // Speed_f < 0.25
+        StopMoving();
+        animator.SetBool("Death_b", true);
     }
 
     private void Shoot()
@@ -96,11 +94,15 @@ public class PlayerController : MonoBehaviour
 
     public void StopMoving()
     {
+        animator.SetFloat("Speed_f", 0);
         playerRb.linearVelocity = Vector3.zero;
         playerRb.angularVelocity = Vector3.zero;
     }
     public void Reset()
     {
         transform.position = startPosition;
+        animator.SetBool("Death_b", false);
+        animator.Rebind();
+        animator.Update(0f);
     }
 }

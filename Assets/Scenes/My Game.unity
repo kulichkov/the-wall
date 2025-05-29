@@ -347,6 +347,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 0703a1849c2c89b4db4568688faf0c5f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 100004, guid: 0703a1849c2c89b4db4568688faf0c5f, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -533,6 +537,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 0703a1849c2c89b4db4568688faf0c5f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 162066427}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: 0703a1849c2c89b4db4568688faf0c5f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 162066431}
   m_SourcePrefab: {fileID: 100100000, guid: 0703a1849c2c89b4db4568688faf0c5f, type: 3}
 --- !u!1 &162066426 stripped
 GameObject:
@@ -551,8 +558,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ec1295e149574213a36c0eecd49072f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 25
-  cooldownTime: 0.5
+  speed: 300
+  cooldownTime: 0.4
   strength: 15
   projectilePool: {fileID: 1711864304}
 --- !u!54 &162066428
@@ -582,6 +589,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 92
   m_CollisionDetection: 0
+--- !u!65 &162066431
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 162066426}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.6362271, y: 3.0083294, z: 1}
+  m_Center: {x: 0.011498094, y: 1.5024157, z: 0}
 --- !u!1 &282963684
 GameObject:
   m_ObjectHideFlags: 0
@@ -1545,8 +1573,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnTime: 3
-  standardEnemyPrefab: {fileID: -3797228222012868100, guid: c563e45c991cd4d6c86977e7a9559e11, type: 3}
-  strongEnemyPrefab: {fileID: -3797228222012868100, guid: c563e45c991cd4d6c86977e7a9559e11, type: 3}
+  standardEnemyPrefab: {fileID: 1177484079698573051, guid: 79f617147b490411aaa5490dbfa66bad, type: 3}
+  strongEnemyPrefab: {fileID: 1177484079698573051, guid: 79f617147b490411aaa5490dbfa66bad, type: 3}
   yEnemySpawn: 0
   minSpawnTime: 0.5
   initialSpawnTime: 3
@@ -1800,6 +1828,7 @@ MonoBehaviour:
   defaultCapacity: 3
   maxSize: 6
   collectionCheck: 1
+  projectileParticlesPool: {fileID: 2098335566}
 --- !u!4 &1711864305
 Transform:
   m_ObjectHideFlags: 0
@@ -2070,6 +2099,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2063072159}
   m_CullTransparentMesh: 1
+--- !u!1 &2098335565
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2098335567}
+  - component: {fileID: 2098335566}
+  m_Layer: 0
+  m_Name: ProjectileParticlesPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2098335566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2098335565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bae906097ca4542b78de638c205373db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectileParticlesPrefab: {fileID: 3122088459456823829, guid: b33ea97e67e6340299bd4e48d1eb4482, type: 3}
+  defaultCapacity: 5
+  maxSize: 8
+  collectionCheck: 1
+--- !u!4 &2098335567
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2098335565}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.31709576, y: 6.213182, z: 0.15878868}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2080,6 +2157,7 @@ SceneRoots:
   - {fileID: 720249311}
   - {fileID: 1669742070}
   - {fileID: 1711864305}
+  - {fileID: 2098335567}
   - {fileID: 1167156852}
   - {fileID: 688979243}
   - {fileID: 60876544}

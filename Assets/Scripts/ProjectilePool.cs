@@ -7,10 +7,12 @@ public class ProjectilePool : MonoBehaviour
     [SerializeField] int defaultCapacity = 5;
     [SerializeField] int maxSize = 8;
     [SerializeField] bool collectionCheck = true;
+    [SerializeField] private ProjectileParticlesPool projectileParticlesPool;
     private IObjectPool<Projectile> projectilePool;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
+        // projectileParticlesPool = new ProjectileParticlesPool();
         projectilePool = new ObjectPool<Projectile>
         (CreateProjectile, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, collectionCheck, defaultCapacity, maxSize);
     }
@@ -36,6 +38,9 @@ public class ProjectilePool : MonoBehaviour
     // Invoked when returning an item to the object pool
     private void OnReleaseToPool(Projectile pooledObject)
     {
+        pooledObject.projectileParticleSystem.SetEmitting(false);
+        pooledObject.projectileParticleSystem.Release();
+        pooledObject.projectileParticleSystem = null;
         pooledObject.gameObject.SetActive(false);
         pooledObject.Reset();
     }
@@ -44,6 +49,8 @@ public class ProjectilePool : MonoBehaviour
     private void OnGetFromPool(Projectile pooledObject)
     {
         pooledObject.gameObject.SetActive(true);
+        pooledObject.projectileParticleSystem = projectileParticlesPool.Get();
+        pooledObject.projectileParticleSystem.SetEmitting(true);
     }
 
     // Invoked when we exceed the maximum number of pooled items (i.e. destroy the pooled object)

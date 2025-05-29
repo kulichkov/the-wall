@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
 
     public void EndGame()
     {
-        Player.StopMoving();
+        Player.SetDead();
         EnemySpawnManager.StopSpawning();
         IsGameOver = true;
         MenuPanel.TitleText.text = "GAME OVER";
