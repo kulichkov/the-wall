@@ -17,10 +17,7 @@ public class Projectile : MonoBehaviour
         if (transform.position.y < yBottomBound)
             Release();
 
-        if (projectileParticleSystem != null)
-        {
-            projectileParticleSystem.transform.position = transform.position;
-        }
+        SetParticlesPosition();
     }
 
     public void Release()
@@ -38,6 +35,7 @@ public class Projectile : MonoBehaviour
 
     public void Throw(float force)
     {
+        SetParticlesPosition();
         projectileRb.useGravity = true;
         projectileRb.AddForce(Vector3.down * force, ForceMode.Impulse);
         projectileRb.AddTorque(GetTorqueVector(), ForceMode.Impulse);
@@ -51,5 +49,13 @@ public class Projectile : MonoBehaviour
     private float GetRandomTorqueValue()
     {
         return UnityEngine.Random.Range(-1.0f, 1.0f);
+    }
+
+    private void SetParticlesPosition()
+    {
+        if (projectileParticleSystem == null)
+            return;
+
+        projectileParticleSystem.transform.position = transform.position;
     }
 }
