@@ -4,10 +4,10 @@ using UnityEngine.Pool;
 public class ProjectilePool : MonoBehaviour
 {
     [SerializeField] private Projectile projectilePrefab;
+    [SerializeField] private ParticleSystem particlesPrefab;
     [SerializeField] int defaultCapacity = 5;
     [SerializeField] int maxSize = 8;
     [SerializeField] bool collectionCheck = true;
-    [SerializeField] private ProjectileParticlesPool projectileParticlesPool;
     private IObjectPool<Projectile> projectilePool;
 
     void Start()
@@ -31,6 +31,7 @@ public class ProjectilePool : MonoBehaviour
     private Projectile CreateProjectile()
     {
         Projectile projectileInstance = Instantiate(projectilePrefab);
+        projectileInstance.particles = Instantiate(particlesPrefab);
         projectileInstance.projectilePool = this;
         return projectileInstance;
     }
@@ -38,9 +39,6 @@ public class ProjectilePool : MonoBehaviour
     // Invoked when returning an item to the object pool
     private void OnReleaseToPool(Projectile pooledObject)
     {
-        pooledObject.projectileParticleSystem.SetEmitting(false);
-        pooledObject.projectileParticleSystem.Release();
-        pooledObject.projectileParticleSystem = null;
         pooledObject.gameObject.SetActive(false);
         pooledObject.Reset();
     }
@@ -49,8 +47,6 @@ public class ProjectilePool : MonoBehaviour
     private void OnGetFromPool(Projectile pooledObject)
     {
         pooledObject.gameObject.SetActive(true);
-        pooledObject.projectileParticleSystem = projectileParticlesPool.Get();
-        pooledObject.projectileParticleSystem.SetEmitting(true);
     }
 
     // Invoked when we exceed the maximum number of pooled items (i.e. destroy the pooled object)

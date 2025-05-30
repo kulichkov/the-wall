@@ -15,6 +15,7 @@ public class Enemy : MonoBehaviour
 
     void Awake()
     {
+        gameObject.layer = LayerMask.NameToLayer("Characters");
         enemyRb = GetComponent<Rigidbody>();
         animator = transform.GetComponentInChildren<Animator>();
     }

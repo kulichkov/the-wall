@@ -1,32 +1,38 @@
+using System.Collections;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
     public Rigidbody projectileRb { get; private set; }
     public ProjectilePool projectilePool;
-    public ProjectileParticleSystem projectileParticleSystem;
+    public ParticleSystem particles;
     private float yBottomBound = -10;
 
     void Awake()
     {
         projectileRb = GetComponent<Rigidbody>();
+        gameObject.layer = LayerMask.NameToLayer("Projectile");
     }
 
     void Update()
     {
+        particles.transform.position = transform.position;
+
         if (transform.position.y < yBottomBound)
             Release();
-
-        SetParticlesPosition();
     }
 
     public void Release()
     {
+        particles.Play();
         projectilePool.Release(this);
+        // projectileRb.isKinematic = true;
+        // StartCoroutine(WaitAndRelease(particles.main.duration));
     }
 
     public void Reset()
     {
+        projectileRb.isKinematic = false;
         projectileRb.useGravity = false;
         projectileRb.linearVelocity = Vector3.zero;
         projectileRb.angularVelocity = Vector3.zero;
@@ -35,7 +41,6 @@ public class Projectile : MonoBehaviour
 
     public void Throw(float force)
     {
-        SetParticlesPosition();
         projectileRb.useGravity = true;
         projectileRb.AddForce(Vector3.down * force, ForceMode.Impulse);
         projectileRb.AddTorque(GetTorqueVector(), ForceMode.Impulse);
@@ -51,11 +56,9 @@ public class Projectile : MonoBehaviour
         return UnityEngine.Random.Range(-1.0f, 1.0f);
     }
 
-    private void SetParticlesPosition()
+    private IEnumerator WaitAndRelease(float seconds)
     {
-        if (projectileParticleSystem == null)
-            return;
-
-        projectileParticleSystem.transform.position = transform.position;
+        yield return new WaitForSeconds(seconds);
+        projectilePool.Release(this);
     }
 }

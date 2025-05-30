@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectilePool: {fileID: 0}
+  particles: {fileID: 7752020557453324506, guid: fffaed2c93c2741409ca5e8b94e26d59, type: 3}
 --- !u!1001 &4704184173404740875
 PrefabInstance:
   m_ObjectHideFlags: 0
