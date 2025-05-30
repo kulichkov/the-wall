@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -26,8 +25,6 @@ public class Projectile : MonoBehaviour
     {
         particles.Play();
         projectilePool.Release(this);
-        // projectileRb.isKinematic = true;
-        // StartCoroutine(WaitAndRelease(particles.main.duration));
     }
 
     public void Reset()
@@ -54,11 +51,5 @@ public class Projectile : MonoBehaviour
     private float GetRandomTorqueValue()
     {
         return UnityEngine.Random.Range(-1.0f, 1.0f);
-    }
-
-    private IEnumerator WaitAndRelease(float seconds)
-    {
-        yield return new WaitForSeconds(seconds);
-        projectilePool.Release(this);
     }
 }

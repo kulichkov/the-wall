@@ -40,11 +40,14 @@ public class Enemy : MonoBehaviour
         if (!isDead && collision.gameObject.TryGetComponent<Projectile>(out var projectile))
         {
             projectile.Release();
-            // _enemyPool.Release(this);
-            // DisablePhysics();
             enemyRb.useGravity = true;
             animator.SetBool("Grounded", false);
-            blood.Play();
+
+            if (collision.contacts.Length > 0)
+            {
+                var point = collision.contacts[0].point;
+                blood.Play();
+            }
             isDead = true;
             GameManager.Instance.AddScore(1);
         }
@@ -64,15 +67,5 @@ public class Enemy : MonoBehaviour
         animator.Update(0f);
         enemyRb.useGravity = false;
         enemyRb.linearVelocity = Vector3.zero;
-    }
-
-    private void DisablePhysics()
-    {
-        enemyRb.isKinematic = true;
-    }
-
-    private void EnablePhysics()
-    {
-        enemyRb.isKinematic = false;
     }
 }
