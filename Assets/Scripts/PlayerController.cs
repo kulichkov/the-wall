@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -13,6 +12,7 @@ public class PlayerController : MonoBehaviour
     private bool isAbleToShoot = true;
     private Vector3 startPosition;
     private Animator animator;
+    private float horizontalInput { get => Input.GetAxis("Horizontal"); }
 
     void Start()
     {
@@ -29,19 +29,23 @@ public class PlayerController : MonoBehaviour
     {
         if (GameManager.Instance.IsGameOver)
             return;
-
-        // Moving
-        float horizontalInput = Input.GetAxis("Horizontal");
-        playerRb.AddForce(Vector3.right * speed * horizontalInput);
-
+            
         var absHorizontalInput = Math.Abs(horizontalInput);
-
         animator.SetFloat("Speed_f", absHorizontalInput);
         transform.rotation = Quaternion.Euler(0, 180 - 90 * horizontalInput, 0);
 
         // Shooting
         if (Input.GetKeyDown(KeyCode.Space))
             Shoot();
+    }
+
+    void FixedUpdate()
+    {
+        if (GameManager.Instance.IsGameOver)
+            return;
+
+        // Moving
+        playerRb.AddForce(Vector3.right * speed * horizontalInput);
     }
 
     void OnCollisionEnter(Collision collision)
