@@ -46,6 +46,7 @@ public class Enemy : MonoBehaviour
             if (collision.contacts.Length > 0)
             {
                 var point = collision.contacts[0].point;
+                blood.transform.position = point;
                 blood.Play();
             }
             isDead = true;
