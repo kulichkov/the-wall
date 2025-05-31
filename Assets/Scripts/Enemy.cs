@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour
         gameObject.layer = LayerMask.NameToLayer("Characters");
         enemyRb = GetComponent<Rigidbody>();
         animator = transform.GetComponentInChildren<Animator>();
+        animator.enabled = true;
     }
 
     void Update()
@@ -41,14 +42,26 @@ public class Enemy : MonoBehaviour
         {
             projectile.Release();
             enemyRb.useGravity = true;
-            animator.SetBool("Grounded", false);
 
-            if (collision.contacts.Length > 0)
+            int deathType = Random.Range(0, 2);
+
+            animator.SetBool("Climb_b", false);
+            if (deathType == 0)
             {
-                var point = collision.contacts[0].point;
-                blood.transform.position = point;
-                blood.Play();
+                animator.SetBool("Grounded", false);
+                if (collision.contacts.Length > 0)
+                {
+                    var point = collision.contacts[0].point;
+                    blood.transform.position = point;
+                }
             }
+            else if (deathType == 1)
+            {
+                animator.SetBool("Death_b", true);
+                animator.SetInteger("DeathType_int", 3);
+                blood.transform.position = transform.position;
+            }
+            blood.Play();
             isDead = true;
             GameManager.Instance.AddScore(1);
         }
@@ -59,14 +72,21 @@ public class Enemy : MonoBehaviour
         // }
     }
 
+    public void StopClimbing()
+    {
+        animator.enabled = false;
+    }
+
     public void Reset()
     {
-        // EnablePhysics();
+        enemyRb.useGravity = false;
+        enemyRb.linearVelocity = Vector3.zero;
         blood.Stop();
         isDead = false;
         animator.Rebind();
-        animator.Update(0f);
-        enemyRb.useGravity = false;
-        enemyRb.linearVelocity = Vector3.zero;
+        animator.Update(0.0f);
+        animator.SetBool("Death_b", false);
+        animator.SetBool("Grounded", true);
+        animator.SetBool("Climb_b", true);
     }
 }

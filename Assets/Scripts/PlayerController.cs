@@ -105,7 +105,6 @@ public class PlayerController : MonoBehaviour
     public void Reset()
     {
         transform.position = startPosition;
-        animator.SetBool("Death_b", false);
         animator.Rebind();
         animator.Update(0f);
     }

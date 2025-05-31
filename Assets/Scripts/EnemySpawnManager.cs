@@ -48,7 +48,6 @@ public class EnemySpawnManager : MonoBehaviour
     {
         activeEnemies.Remove(pooledObject);
         pooledObject.gameObject.SetActive(false);
-        pooledObject.Reset();
     }
 
     // Invoked when retrieving the next item from the object pool
@@ -56,6 +55,7 @@ public class EnemySpawnManager : MonoBehaviour
     {
         pooledObject.gameObject.SetActive(true);
         activeEnemies.Add(pooledObject);
+        pooledObject.Reset();
     }
 
     // Invoked when we exceed the maximum number of pooled items (i.e. destroy the pooled object)
@@ -105,6 +105,10 @@ public class EnemySpawnManager : MonoBehaviour
         if (spawining == null)
             return;
         StopCoroutine(spawining);
+        foreach (var enemy in activeEnemies)
+        {
+            enemy.StopClimbing();
+        }
     }
 
     public void Clear()

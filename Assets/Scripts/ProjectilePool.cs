@@ -24,7 +24,6 @@ public class ProjectilePool : MonoBehaviour
     public void Release(Projectile projectile)
     {
         projectilePool.Release(projectile);
-        projectile.Reset();
     }
 
     // invoked when creating an item to populate the object pool
@@ -40,12 +39,12 @@ public class ProjectilePool : MonoBehaviour
     private void OnReleaseToPool(Projectile pooledObject)
     {
         pooledObject.gameObject.SetActive(false);
-        pooledObject.Reset();
     }
 
     // Invoked when retrieving the next item from the object pool
     private void OnGetFromPool(Projectile pooledObject)
     {
+        pooledObject.Reset();
         pooledObject.gameObject.SetActive(true);
     }
 
