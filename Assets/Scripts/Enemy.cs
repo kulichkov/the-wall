@@ -12,13 +12,14 @@ public class Enemy : MonoBehaviour
     private Animator animator;
     private bool isDead;
     [SerializeField] private ParticleSystem blood;
+    private Quaternion initialRotation;
 
     void Awake()
     {
-        gameObject.layer = LayerMask.NameToLayer("Characters");
+        initialRotation = transform.rotation;
+        gameObject.layer = LayerMask.NameToLayer("Enemy");
         enemyRb = GetComponent<Rigidbody>();
         animator = transform.GetComponentInChildren<Animator>();
-        animator.enabled = true;
     }
 
     void Update()
@@ -46,21 +47,14 @@ public class Enemy : MonoBehaviour
             int deathType = Random.Range(0, 2);
 
             animator.SetBool("Climb_b", false);
-            if (deathType == 0)
+            FallDown();
+
+            if (collision.contacts.Length > 0)
             {
-                animator.SetBool("Grounded", false);
-                if (collision.contacts.Length > 0)
-                {
-                    var point = collision.contacts[0].point;
-                    blood.transform.position = point;
-                }
+                var point = collision.contacts[0].point;
+                blood.transform.position = point;
             }
-            else if (deathType == 1)
-            {
-                animator.SetBool("Death_b", true);
-                animator.SetInteger("DeathType_int", 3);
-                blood.transform.position = transform.position;
-            }
+
             blood.Play();
             isDead = true;
             GameManager.Instance.AddScore(1);
@@ -72,6 +66,12 @@ public class Enemy : MonoBehaviour
         // }
     }
 
+    public void FallDown()
+    {
+        animator.enabled = false;
+        enemyRb.useGravity = true;
+    }
+
     public void StopClimbing()
     {
         animator.enabled = false;
@@ -81,8 +81,11 @@ public class Enemy : MonoBehaviour
     {
         enemyRb.useGravity = false;
         enemyRb.linearVelocity = Vector3.zero;
+        enemyRb.angularVelocity = Vector3.zero;
+        transform.rotation = initialRotation;
         blood.Stop();
         isDead = false;
+        animator.enabled = true;
         animator.Rebind();
         animator.Update(0.0f);
         animator.SetBool("Death_b", false);

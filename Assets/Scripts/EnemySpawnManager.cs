@@ -38,7 +38,6 @@ public class EnemySpawnManager : MonoBehaviour
     private Enemy CreateObject()
     {
         Enemy enemyInstance = Instantiate(standardEnemyPrefab);
-        enemyInstance.gameObject.layer = LayerMask.NameToLayer("Characters");
         enemyInstance.enemyPool = enemyPool;
         return enemyInstance;
     }

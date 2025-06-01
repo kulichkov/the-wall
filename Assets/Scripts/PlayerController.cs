@@ -75,8 +75,6 @@ public class PlayerController : MonoBehaviour
     {
         if (!isAbleToShoot)
             return;
-
-        Debug.Log("Player shoots");
         Projectile projectile = projectilePool.Get();
         if (projectile == null)
             return;
@@ -85,7 +83,6 @@ public class PlayerController : MonoBehaviour
         projectile.transform.position = projectilePosition;
 
         projectile.Throw(strength);
-        Debug.Log("Projectile velocity: " + projectile.projectileRb.linearVelocity);
         StartCoroutine(CoolDown());
     }
 
