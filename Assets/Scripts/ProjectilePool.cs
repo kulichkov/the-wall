@@ -15,6 +15,9 @@ public class ProjectilePool : MonoBehaviour
         // projectileParticlesPool = new ProjectileParticlesPool();
         projectilePool = new ObjectPool<Projectile>
         (CreateProjectile, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, collectionCheck, defaultCapacity, maxSize);
+
+        Debug.Log("Try to warm-up the pool");
+        projectilePool.Get().Release();
     }
 
     public Projectile Get()
